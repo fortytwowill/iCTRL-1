@@ -1,0 +1,35 @@
+               
+               
+┌─────────────┐
+│ Scan Status │
+└─────────────┘
+  Scanning 384 files tracked by git with 1080 Code rules:
+                                                                                                                        
+  Language      Rules   Files          Origin      Rules                                                                
+ ─────────────────────────────        ───────────────────                                                               
+  <multilang>      63     384          Community    1080                                                                
+  ts              163     145                                                                                           
+  json              4      43                                                                                           
+  js              153       4                                                                                           
+  python          243       2                                                                                           
+  yaml             36       1                                                                                           
+  html              1       1                                                                                           
+                                                                                                                        
+                
+                
+┌──────────────┐
+│ Scan Summary │
+└──────────────┘
+✅ Scan completed successfully.
+ • Findings: 22 (22 blocking)
+ • Rules run: 507
+ • Targets scanned: 384
+ • Parsed lines: ~99.9%
+ • Scan skipped: 
+   ◦ Files larger than  files 1.0 MB: 14
+   ◦ Files matching .semgrepignore patterns: 18
+ • Scan was limited to files tracked by git
+ • For a detailed list of skipped files and lines, run semgrep with the --verbose flag
+Ran 507 rules on 384 files: 22 findings.
+
+A new version of Semgrep is available. See https://semgrep.dev/docs/upgrading
