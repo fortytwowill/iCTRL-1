@@ -20,7 +20,8 @@ export function ContactSection() {
  setErrors({});
 
  const result = contactFormSchema.safeParse(formData);
- if (!result.success const fieldErrors: Record<string, string> = {};
+ if (!result.success) {
+ const fieldErrors: Record<string, string> = {};
  result.error.issues.forEach((issue) => {
  if (issue.path[0]) fieldErrors[issue.path[0] as string] = issue.message;
  });

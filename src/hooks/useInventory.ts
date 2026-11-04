@@ -31,7 +31,7 @@ export function useCreateItem() {
  const queryClient = useQueryClient();
  const { currentOrg } = useAuth();
  return useMutation({
- mutationFn: async (item: any) => {
+ mutationFn: async (item: unknown) => {
  if (!currentOrg) throw new Error("No organization selected");
  const res = await fetch("/api/inventory", {
  method: "POST",
@@ -45,8 +45,8 @@ export function useCreateItem() {
  queryClient.invalidateQueries({ queryKey: ["items"] });
  notifications.show({ title: "Success", message: "Item created", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -54,7 +54,7 @@ export function useCreateItem() {
 export function useUpdateItem() {
  const queryClient = useQueryClient();
  return useMutation({
- mutationFn: async ({ item_code, updates }: { item_code: string; updates: any }) => {
+ mutationFn: async ({ item_code, updates }: { item_code: string; updates: unknown }) => {
  const res = await fetch(`/api/inventory/${item_code}`, {
  method: "PATCH",
  headers: { "Content-Type": "application/json" },
@@ -67,8 +67,8 @@ export function useUpdateItem() {
  queryClient.invalidateQueries({ queryKey: ["items"] });
  notifications.show({ title: "Success", message: "Item updated", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -84,8 +84,8 @@ export function useDeleteItem() {
  queryClient.invalidateQueries({ queryKey: ["items"] });
  notifications.show({ title: "Success", message: "Item deleted", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -109,7 +109,7 @@ export function useCreateProject() {
  const queryClient = useQueryClient();
  const { currentOrg } = useAuth();
  return useMutation({
- mutationFn: async (project: any) => {
+ mutationFn: async (project: unknown) => {
  if (!currentOrg) throw new Error("No organization selected");
  const res = await fetch("/api/projects", {
  method: "POST",
@@ -123,8 +123,8 @@ export function useCreateProject() {
  queryClient.invalidateQueries({ queryKey: ["projects"] });
  notifications.show({ title: "Success", message: "Project created", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -132,7 +132,7 @@ export function useCreateProject() {
 export function useUpdateProject() {
  const queryClient = useQueryClient();
  return useMutation({
- mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
+ mutationFn: async ({ id, updates }: { id: string; updates: unknown }) => {
  const res = await fetch(`/api/projects/${id}`, {
  method: "PATCH",
  headers: { "Content-Type": "application/json" },
@@ -145,8 +145,8 @@ export function useUpdateProject() {
  queryClient.invalidateQueries({ queryKey: ["projects"] });
  notifications.show({ title: "Success", message: "Project updated", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -162,8 +162,8 @@ export function useDeleteProject() {
  queryClient.invalidateQueries({ queryKey: ["projects"] });
  notifications.show({ title: "Success", message: "Project deleted", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -339,7 +339,7 @@ export function useCheckoutItemsBatch() {
  const queryClient = useQueryClient();
  const { currentOrg } = useAuth();
  return useMutation({
- mutationFn: async (items: any[]) => {
+ mutationFn: async (items: unknown[]) => {
  if (!currentOrg) throw new Error("No organization selected");
  const res = await fetch("/api/inventory/checkout-batch", {
  method: "POST",
@@ -354,8 +354,8 @@ export function useCheckoutItemsBatch() {
  queryClient.invalidateQueries({ queryKey: ["transactionLogs"] });
  notifications.show({ title: "Success", message: "Items checked out", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -364,7 +364,7 @@ export function useReturnItem() {
  const queryClient = useQueryClient();
  const { currentOrg } = useAuth();
  return useMutation({
- mutationFn: async (data: any) => {
+ mutationFn: async (data: unknown) => {
  if (!currentOrg) throw new Error("No organization selected");
  const res = await fetch("/api/inventory/return", {
  method: "POST",
@@ -379,8 +379,8 @@ export function useReturnItem() {
  queryClient.invalidateQueries({ queryKey: ["transactionLogs"] });
  notifications.show({ title: "Success", message: "Return processed", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -403,7 +403,7 @@ export function useProjectLabel() {
  const { projects } = useProjects();
  return (projectId: string) => {
  if (!projects) return projectId;
- const project = projects.find((p: any) => p.id === projectId);
+ const project = projects.find((p): p is { id: string; name?: string } => typeof p === 'object' && p !== null && 'id' in p && p.id === projectId);
  return project?.name || projectId;
  };
 }
@@ -411,7 +411,7 @@ export function useProjectLabel() {
 export function useUpdateTransactionLog() {
  const queryClient = useQueryClient();
  return useMutation({
- mutationFn: async ({ id, updates }: { id: string; updates: any }) => {
+ mutationFn: async ({ id, updates }: { id: string; updates: unknown }) => {
  const res = await fetch(`/api/inventory/logs/${id}`, {
  method: "PATCH",
  headers: { "Content-Type": "application/json" },
@@ -424,8 +424,8 @@ export function useUpdateTransactionLog() {
  queryClient.invalidateQueries({ queryKey: ["transactionLogs"] });
  notifications.show({ title: "Success", message: "Log updated", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -462,7 +462,7 @@ export function useUpdateABCThresholds() {
  const queryClient = useQueryClient();
  const { currentOrg } = useAuth();
  return useMutation({
- mutationFn: async (thresholds: any) => {
+ mutationFn: async (thresholds: unknown) => {
  if (!currentOrg) throw new Error("No organization selected");
  const res = await fetch("/api/settings/abc-thresholds", {
  method: "POST",
@@ -476,8 +476,8 @@ export function useUpdateABCThresholds() {
  queryClient.invalidateQueries({ queryKey: ["abcThresholds"] });
  notifications.show({ title: "Success", message: "ABC thresholds updated", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }
@@ -499,8 +499,8 @@ export function useUpdateProjectLabel() {
  queryClient.invalidateQueries({ queryKey: ["projects"] });
  notifications.show({ title: "Success", message: "Project label updated", color: "green" });
  },
- onError: (e: any) => {
- notifications.show({ title: "Error", message: e.message, color: "red" });
+ onError: (e: unknown) => {
+ notifications.show({ title: "Error", message: e instanceof Error ? e.message : String(e), color: "red" });
  },
  });
 }

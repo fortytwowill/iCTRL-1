@@ -20,7 +20,7 @@ export interface PuterAIResponse {
 export async function askPuterAI(prompt: string, context?: string): Promise<PuterAIResponse> {
  try {
  // Check if Puter is available in the global scope
- if (typeof window === 'undefined' || !(window as any).puter) {
+ if (typeof window === 'undefined' || !(window as Record<string, unknown>).puter) {
  return {
  message: "Puter AI is not available. Please ensure you are running this application within the Puter environment or have the script loaded.",
  success: false,
@@ -28,7 +28,7 @@ export async function askPuterAI(prompt: string, context?: string): Promise<Pute
  };
  }
 
- const puter = (window as any).puter;
+ const puter = (window as Record<string, unknown>).puter;
  
  // Construct the full prompt with context if provided
  let fullPrompt = prompt;
@@ -43,12 +43,12 @@ export async function askPuterAI(prompt: string, context?: string): Promise<Pute
  message: typeof response === 'string' ? response : response?.message || JSON.stringify(response),
  success: true
  };
- } catch (error: any) {
+ } catch (error: unknown) {
  console.error("Error calling Puter AI:", error);
  return {
  message: "Sorry, I encountered an error while processing your request.",
  success: false,
- error: error.message
+ error: error instanceof Error ? error.message : String(error)
  };
  }
 }
@@ -57,5 +57,5 @@ export async function askPuterAI(prompt: string, context?: string): Promise<Pute
  * Checks if Puter AI is currently available and enabled.
  */
 export function isPuterAIAvailable(): boolean {
- return typeof window !== 'undefined' && !!(window as any).puter && !!(window as any).puter.ai;
+ return typeof window !== 'undefined' && !!(window as Record<string, unknown>).puter && !!((window as Record<string, unknown>).puter as Record<string, unknown>)?.ai;
 }

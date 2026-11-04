@@ -12,7 +12,7 @@ export interface AuthRequest extends Request {
 
 export async function requireAuth(req: AuthRequest, res: Response, next: NextFunction) {
  const session = await auth.api.getSession({
-  headers: req.headers as any,
+  headers: req.headers as Record<string, string>,
  });
 
  if (!session?.user) {

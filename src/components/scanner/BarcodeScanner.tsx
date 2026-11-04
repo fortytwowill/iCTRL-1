@@ -123,7 +123,7 @@ function ScannerContainer({
       })();
     };
     // Stable effect — callbacks accessed via refs so scanner is not torn down on re-renders
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   return (

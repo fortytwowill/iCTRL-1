@@ -45,10 +45,10 @@ export interface OrganizationUser {
 }
 
 export interface AuthContextType {
- user: any | null;
- session: any | null;
+ user: unknown | null;
+ session: unknown | null;
  profile: Profile | null;
- currentOrg: any | null;
+ currentOrg: unknown | null;
  currentOrgUser: OrganizationUser | null;
  isLoading: boolean;
  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
@@ -64,10 +64,10 @@ export interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
- const [user, setUser] = useState<any | null>(null);
- const [session, setSession] = useState<any | null>(null);
+ const [user, setUser] = useState<unknown | null>(null);
+ const [session, setSession] = useState<unknown | null>(null);
  const [profile, setProfile] = useState<Profile | null>(null);
- const [currentOrg, setCurrentOrg] = useState<any | null>(null);
+ const [currentOrg, setCurrentOrg] = useState<unknown | null>(null);
  const [currentOrgUser, setCurrentOrgUser] = useState<OrganizationUser | null>(null);
  const [isLoading, setIsLoading] = useState(true);
 
@@ -109,8 +109,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
  await authClient.signIn.email({ email, password });
  await loadSession();
  return { error: null };
- } catch (e: any) {
- return { error: e };
+ } catch (e: unknown) {
+ return { error: e instanceof Error ? e : new Error(String(e)) };
  }
  }, [loadSession]);
 
@@ -119,8 +119,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
  await authClient.signUp.email({ email, password, name });
  await loadSession();
  return { error: null };
- } catch (e: any) {
- return { error: e };
+ } catch (e: unknown) {
+ return { error: e instanceof Error ? e : new Error(String(e)) };
  }
  }, [loadSession]);
 
@@ -138,8 +138,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
  const updated = await api.auth.updateProfile(updates);
  setProfile(updated.profile);
  return { error: null };
- } catch (e: any) {
- return { error: e };
+ } catch (e: unknown) {
+ return { error: e instanceof Error ? e : new Error(String(e)) };
  }
  }, []);
 
@@ -148,8 +148,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
  await api.auth.acceptInvitation(token);
  await loadSession();
  return { error: null };
- } catch (e: any) {
- return { error: e };
+ } catch (e: unknown) {
+ return { error: e instanceof Error ? e : new Error(String(e)) };
  }
  }, [loadSession]);
 
